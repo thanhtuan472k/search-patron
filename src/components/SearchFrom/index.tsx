@@ -14,6 +14,13 @@ function SearchForm() {
         setMemberName('John Doe');
     };
 
+    const handleReset = () => {
+        setPassport('');
+        setDob('');
+        setMemberNo('');
+        setMemberName('');
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.searchContainer}>
@@ -32,9 +39,14 @@ function SearchForm() {
                     onChange={(e) => setDob(e.target.value)}
                     className={styles.input}
                 />
-                <button onClick={handleSearch} className={styles.button}>
-                    SEARCH
-                </button>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleSearch} className={styles.button}>
+                        SEARCH
+                    </button>
+                    <button onClick={handleReset} className={styles.button}>
+                        RESET
+                    </button>
+                </div>
             </div>
             <div className={styles.resultContainer}>
                 <h3 className={styles.resultHeader}>RESULT</h3>
