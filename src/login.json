@@ -1,0 +1,11 @@
+{
+    "Href": "http://10.255.4.11:8080/v2.3/bearer/Marketing.svc/Users/50797",
+    "UserId": 50797,
+    "FirstName": "Shen",
+    "LastName": "Ma",
+    "Status": "Active",
+    "SiteId": 1,
+    "IsPINLocked": false,
+    "LoginName": "TRANG.MA",
+    "JWT": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDZhMDlhMi1hZmNkLTRiYjgtOTc3Yi1jMTlmNTkyZWM5NzYiLCJpZCI6IjUwNzk3Iiwic3ViIjoiNTA3OTciLCJsb2dpbm5hbWUiOiJUcmFuZy5tYSIsImV4cG1pbnMiOiI2MCIsIm5iZiI6MTcyNDA0MDAzNSwiZXhwIjoxNzI0MDQzNjM1LCJpc3MiOiJBQ0VSRVNUIiwiYXVkIjoiQWxsVXNlcnMifQ.ogBtNXO0jpUIqT_x-RF2PmtVOV4tqXouwAHrh1JTv1b8LutoSh24go5dhiYWrz_TSjH7e0L-bltqcfPPcILZyjf4j-GJ-4dRJUIcSYjk9OdFH5RMLfL0vIaZZhWqRkG37p9jIEPluzU4jXWt0KEJ32AZsk6CimzGY8SLfOoGMW62E_zNi-eZrIIyCmVFMdhwojqmDAeny3uNq04MIH_AJlfoK7lp8dUrUELYlI9bQA4Zi4px1qAldOj0q8Almp7lNeOtA2IKazFDw4Y9I2fa3Lf-qqIr7dwCkaOBaHbkemoOiWEXByBwEaTgAKlmdmMOCtvD4hWpzpR0V2MNXC8iBQ"
+  }
