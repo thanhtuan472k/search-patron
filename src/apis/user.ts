@@ -1,20 +1,18 @@
-import { use } from 'chai';
-
 export async function getData() {
-    const response = await fetch('src/data.json');
-    const data = await response.json();
-    return data;
+  const response = await fetch("src/data.json");
+  const data = await response.json();
+  return data;
 }
 
 export async function loginApi(username: string, password: string) {
-  const response = await fetch('src/login.json', {
-    method: 'POST',
+  const response = await fetch("src/login.json", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ username, password }),
   });
-  if (username === 'admin' && password === 'admin') {
+  if (username === "admin" && password === "admin") {
     return { success: true };
   }
   const data = await response.json();
@@ -23,10 +21,12 @@ export async function loginApi(username: string, password: string) {
 }
 
 export const fetchImages = async (query: string) => {
-    const response = await fetch(`https://api.apiopen.top/api/getImages?query=${query}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    return data;
-  };
+  const response = await fetch(
+    `https://api.apiopen.top/api/getImages?query=${query}`
+  );
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  const data = await response.json();
+  return data;
+};
