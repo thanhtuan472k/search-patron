@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { getData } from "../../apis/user";
 
@@ -23,15 +23,15 @@ function SearchForm() {
   const handleSearch = () => {
     // Logic to handle search and set results
     // For now, just setting dummy data
-    // setMemberNo('123456');
-    // setMemberName('John Doe');
+    setMemberNo('123456');
+    setMemberName('John Doe');
   };
 
   const handleReset = () => {
-    // setPassport("");
-    // setDob("");
-    // setMemberNo("");
-    // setMemberName("");
+    setPassport("");
+    setDob("");
+    setMemberNo("");
+    setMemberName("");
   };
 
   console.log("data", result)
