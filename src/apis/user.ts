@@ -19,14 +19,3 @@ export async function loginApi(username: string, password: string) {
   console.log("data", data);
   return data;
 }
-
-export const fetchImages = async (query: string) => {
-  const response = await fetch(
-    `https://api.apiopen.top/api/getImages?query=${query}`
-  );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  const data = await response.json();
-  return data;
-};
