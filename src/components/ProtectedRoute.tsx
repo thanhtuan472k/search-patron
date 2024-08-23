@@ -1,15 +1,12 @@
-import { useContext } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
-import AuthContext from '../context/AuthContext'
+// src/components/PrivateRoute.tsx
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute = () => {
-  const auth = useContext(AuthContext)
+const PrivateRoute: React.FC = () => {
+  const { isAuthenticated } = useAuth();
 
-  if (!auth) {
-    throw new Error('AuthContext must be used within an AuthProvider')
-  }
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
 
-  return auth.isAuthenticated ? <Outlet /> : <Navigate to="/" />
-}
-
-export default ProtectedRoute
+export default PrivateRoute;

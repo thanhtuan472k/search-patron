@@ -1,25 +1,20 @@
 import { useContext, useState } from 'react'
 import styles from './style.module.css'
 import { useNavigate } from 'react-router-dom'
-import AuthContext from '../../context/AuthContext'
+import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth();
   const [error, setError] = useState('')
-  const auth = useContext(AuthContext)
 
-  if (!auth) {
-    throw new Error('AuthContext must be used within an AuthProvider')
-  }
-
-  console.log("email", email)
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await auth.login(email, password)
-      navigate('/search') 
+      await login(email, password)
+      navigate('/') 
     } catch {
       setError('Invalid credentials')
     }
@@ -57,7 +52,7 @@ const LoginForm = () => {
           />
         </div>
         <button type='submit' className={styles.button}>
-          Confirm
+          Login
         </button>
       </form>
     </div>

@@ -3,17 +3,20 @@ import './App.css'
 import LoginForm from './components/Login'
 import SearchForm from './components/SearchFrom'
 import ProtectedRoute from './components/ProtectedRoute'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
   return (
-    <Router>
-    <Routes>
-      <Route path="/" element={<LoginForm />} />
-      <Route element={<ProtectedRoute />}>
-        <Route path="/search" element={<SearchForm />} />
-      </Route>
-    </Routes>
-  </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/" element={<ProtectedRoute />}>
+            <Route path="/" element={<SearchForm />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 

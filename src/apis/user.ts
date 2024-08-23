@@ -7,21 +7,21 @@ export async function getData() {
 }
 
 export async function loginApi(email: string, password: string) {
-  const apiUrl = `${appConfig.igt_api_base_url}/auth`
+  const apiUrl = `${appConfig.igt_api_base_url}/auth`;
   const response = await fetch(apiUrl, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password })
-  })
-  if (response.status === 200) {
-    const result = await response.json()
+    body: JSON.stringify({ email, password }),
+  });
 
-    return result
+  if (!response.ok) {
+    throw new Error(`Login failed with status: ${response.status}`);
   }
 
-  return null
+  const result = await response.json();
+  return result;
 }
 
 export const fetchImages = async (query: string) => {

@@ -1,98 +1,72 @@
-import { createContext, useEffect, useState } from "react";
-import { UserProfile } from "../types/user";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// src/context/AuthContext.tsx
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import axios from 'axios';
+import { loginApi } from '../apis/user';
 
-type UserContextType = {
-  user: UserProfile | null;
-  token: string | null;
-  registerUser: (email: string, username: string, password: string) => void;
-  loginUser: (username: string, password: string) => void;
+interface AuthContextType {
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isLoggedIn: () => boolean;
+  token: string | null;
+  user: string | null;
 }
 
-type Props = {children: React.ReactNode}
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const UserContext = createContext<UserContextType>({} as UserContextType);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
-export const UserProvider = ({ children }: Props) => {
-  const navigate = useNavigate();
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [isReady, setIsReady] = useState(false);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [user, setUser] = useState<string | null>(localStorage.getItem('user'));
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-    if (user && token) {
-      setUser(JSON.parse(user));
-      setToken(token);
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    if (token) {
+      setIsAuthenticated(true);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      setIsAuthenticated(false);
+      delete axios.defaults.headers.common['Authorization'];
     }
-    setIsReady(true);
-  }, []);
+  }, [token]);
 
-  const registerUser = async (
-    email: string,
-    username: string,
-    password: string
-  ) => {
-    await registerAPI(email, username, password)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem("token", res?.data.token);
-          const userObj = {
-            userName: res?.data.userName,
-            email: res?.data.email,
-          };
-          localStorage.setItem("user", JSON.stringify(userObj));
-          setToken(res?.data.token!);
-          setUser(userObj!);
-          toast.success("Login Success!");
-          navigate("/search");
-        }
-      })
-      .catch((e) => toast.warning("Server error occured"));
-  };
-
-  const loginUser = async (username: string, password: string) => {
-    await loginAPI(username, password)
-      .then((res) => {
-        if (res) {
-          localStorage.setItem("token", res?.data.token);
-          const userObj = {
-            userName: res?.data.userName,
-            email: res?.data.email,
-          };
-          localStorage.setItem("user", JSON.stringify(userObj));
-          setToken(res?.data.token!);
-          setUser(userObj!);
-          toast.success("Login Success!");
-          navigate("/search");
-        }
-      })
-      .catch((e) => toast.warning("Server error occured"));
-  };
-
-  const isLoggedIn = () => {
-    return !!user;
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await loginApi(email, password);
+      console.log("response", response)
+      if (response !== null) {
+        const receivedToken = response.token;
+        localStorage.setItem('token', receivedToken);
+        localStorage.setItem('user', email);
+        setToken(receivedToken);
+        setUser(email);
+        setIsAuthenticated(true);
+      } else {
+        throw new Error('Login failed');
+      }
+    } catch (error) {
+      console.error('Login failed', error);
+      // Handle error, e.g., show error message to user
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setToken(null);
     setUser(null);
-    setToken("");
-    navigate("/");
+    setIsAuthenticated(false);
   };
 
   return (
-    <UserContext.Provider
-      value={{ loginUser, user, token, logout, isLoggedIn, registerUser }}
-    >
-      {isReady ? children : null}
-    </UserContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, token, user }}>
+      {children}
+    </AuthContext.Provider>
   );
 };

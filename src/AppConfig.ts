@@ -4,3 +4,4 @@ export const appConfig = {
   igt_api_info_domain: 'SCDNUAT.com',
   time_to_live: 0
 }
+
