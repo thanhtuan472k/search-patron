@@ -6,14 +6,13 @@ const LoginForm = () => {
     const {login} = useAuth()
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loading,setLoading] = useState(false)
-    const [error,setError] = useState('');
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true)
         try {
-            
             await login({email: username, password});
             setLoading(false)
         } catch (error:any) {
@@ -21,7 +20,6 @@ const LoginForm = () => {
             setError(error?.message)
             setLoading(false)
         }
-   
     }
 
     return (
@@ -52,7 +50,7 @@ const LoginForm = () => {
                         className={styles.input}
                     />
                 </div>
-                <button type="submit" disabled={loading} className={styles.button}>{loading ? "loading...": "confirm"}</button>
+                <button type="submit" disabled={loading} className={styles.button}>{loading ? "Loading...": "Login"}</button>
             </form>
         </div>
     );

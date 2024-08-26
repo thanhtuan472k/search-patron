@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }: PropsWithChildren)  => {
             return;
         }
 
-
         try {
             const user = await authApi.getMe()
             setUser(user);

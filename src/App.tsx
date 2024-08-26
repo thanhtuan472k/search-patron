@@ -10,14 +10,12 @@ import SearchForm from './components/SearchFrom';
 function App() {
   return (
     <Router>
-      {/* <Provider store={store}> */}
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<AuthRoute><LoginForm /></AuthRoute>} />
             <Route path="/" element={<ProtectedRoute><SearchForm /></ProtectedRoute>} />
           </Routes>
         </AuthProvider>
-        {/* </Provider> */}
       </Router>
    
   );
