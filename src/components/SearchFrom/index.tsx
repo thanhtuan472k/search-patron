@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./style.module.css";
-import { getData } from "../../apis/user";
+// import { getData } from "../../apis/user";
 
 function SearchForm() {
   const [passport, setPassport] = useState("");
@@ -10,14 +10,14 @@ function SearchForm() {
   const [result, setResult] = useState([])
 
   // Call api data
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getData();
-      setResult(data);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await getData();
+  //     setResult(data);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
 
   const handleSearch = () => {

@@ -1,22 +1,27 @@
 import { useState } from 'react';
 import styles from './style.module.css';
-import { useNavigate } from 'react-router-dom';
-import { loginApi } from '../../apis/user';
+import { useAuth } from '../../contexts/auth';
 
 const LoginForm = () => {
+    const {login} = useAuth()
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
-    const [error, setError] = useState('');
+    const [loading,setLoading] = useState(false)
+    const [error,setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await loginApi(username, password);
-        if (response.success) {
-            navigate('/search');
-        } else {
-            setError('Invalid credentials');
+        setLoading(true)
+        try {
+            
+            await login({email: username, password});
+            setLoading(false)
+        } catch (error:any) {
+            console.log(error)
+            setError(error?.message)
+            setLoading(false)
         }
+   
     }
 
     return (
@@ -27,6 +32,7 @@ const LoginForm = () => {
                 <div className={styles.inputGroup}>
                     <label className={styles.label} htmlFor="username">Username</label>
                     <input
+                    disabled={loading}
                         type="text"
                         id="username"
                         name="username"
@@ -38,15 +44,15 @@ const LoginForm = () => {
                 <div className={styles.inputGroup}>
                     <label className={styles.label} htmlFor="password">Password</label>
                     <input
+                    disabled={loading}
                         type="password"
                         id="password"
-                        name="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className={styles.input}
                     />
                 </div>
-                <button type="submit" className={styles.button}>Confirm</button>
+                <button type="submit" disabled={loading} className={styles.button}>{loading ? "loading...": "confirm"}</button>
             </form>
         </div>
     );
