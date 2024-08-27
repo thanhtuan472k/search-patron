@@ -1,13 +1,15 @@
 export interface IUser {
-    _id: string
-    first_name: string
-    last_name: string
-    email: string
-    password: string
-    avatar: string
-    date: string
-    __v: number
-}
+    Href: string
+    UserId: number
+    FirstName: string
+    LastName: string
+    Status: string
+    SiteId: number
+    IsPINLocked: boolean
+    LoginName: string
+    JWT: string
+  }
+  
 
 export interface Token {
     token: string
@@ -15,8 +17,10 @@ export interface Token {
 }
 
 export interface ILoginBody {
-    email: string
+    userName: string
     password: string
+    domain: string,
+    timeToLive: number
 }
 
 export interface IPatronQuery {

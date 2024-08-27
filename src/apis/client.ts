@@ -1,11 +1,11 @@
+import { appConfig } from './../../AppConfig';
 import axios from 'axios';
 
 export const instance = axios.create({
-    baseURL: 'http://localhost:5000/api/v1',
+    baseURL: appConfig.IGT_APT_BASE_URL,
     timeout: 10000,
     headers: {"Content-Type": "application/json"},
 });
-
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
@@ -13,7 +13,7 @@ instance.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
 
     if (token) {
-        config.headers["x-auth-token"] = token;
+        config.headers.Authorization =  `Bearer ${token}`;
     }
 
     return config;

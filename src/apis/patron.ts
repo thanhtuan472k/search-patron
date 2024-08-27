@@ -1,4 +1,3 @@
-import { IPatron, IUser } from "../types/user"
 import { instance } from "./client"
 
 export const patronApi = {
@@ -7,3 +6,4 @@ export const patronApi = {
         return response.data
     }
 }
+

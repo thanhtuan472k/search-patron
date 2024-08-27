@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import styles from './style.module.css';
 import { useAuth } from '../../contexts/auth';
+import { appConfig } from '../../../AppConfig';
 
 const LoginForm = () => {
     const {login} = useAuth()
-    const [username, setUsername] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('');
@@ -13,7 +14,7 @@ const LoginForm = () => {
         e.preventDefault();
         setLoading(true)
         try {
-            await login({email: username, password});
+            await login({userName, password, domain: appConfig.IGT_APT_INFO_DOMAIN,timeToLive: appConfig.TIME_TO_LIVE});
             setLoading(false)
         } catch (error:any) {
             console.log(error)
@@ -28,14 +29,14 @@ const LoginForm = () => {
             {error && <p className={styles.error}>{error}</p>}
             <form onSubmit={handleLogin}>
                 <div className={styles.inputGroup}>
-                    <label className={styles.label} htmlFor="username">Username</label>
+                    <label className={styles.label} htmlFor="userName">Username</label>
                     <input
                     disabled={loading}
                         type="text"
-                        id="username"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        id="userName"
+                        name="userName"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
                         className={styles.input}
                     />
                 </div>

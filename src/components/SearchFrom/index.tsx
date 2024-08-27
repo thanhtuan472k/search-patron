@@ -1,22 +1,26 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./style.module.css";
 import { useAuth } from "../../contexts/auth";
 import { patronApi } from "../../apis/patron";
-import { IPatron, IUser } from "../../types/user";
-// import { getData } from "../../apis/user";
 
 function SearchForm() {
   const { user, logout } = useAuth();
   const [keyword, setKeyword] = useState("");
   const [passport, setPassport] = useState("");
   const [dob, setDob] = useState("");
-  const [result, setResult] = useState([]);
+  const [memberNo, setMemberNo] = useState("");
+  const [memberName, setMemberName] = useState("");
+  const [result, setResult] = useState();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await patronApi.getList({ keyword, passport, dob });
-      setResult(response);
+      setResult(response.total);
+      if (response > 0) {
+        setMemberNo(response);
+        setMemberName(`${response[0].FirstName} ${response[0].LastName}`);
+      }
     } catch (error) {
       console.error("Error fetching filtered users:", error);
     }
@@ -26,17 +30,23 @@ function SearchForm() {
     setKeyword("");
     setPassport("");
     setDob("");
-    setResult([]);
+    // setResult([]);
   };
 
-  console.log("data", result);
+
+  console.log("Result", result)
+  console.log("member No", memberNo)
+  console.log("member name", memberName)
+
+  
+
   return (
     <div className={styles.container}>
       <div className={styles.topRight}>
         {user && (
           <>
             <span>
-              Hi, {user.first_name} {user.last_name}
+              Hi, {user.FirstName} {user.LastName}
             </span>
             <button onClick={logout} className={styles.logoutButton}>
               Logout
@@ -52,6 +62,7 @@ function SearchForm() {
             placeholder="Keyword"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
+            onFocus={() => setKeyword("")}
             className={styles.input}
             required
           />
@@ -61,13 +72,14 @@ function SearchForm() {
             value={passport}
             onChange={(e) => setPassport(e.target.value)}
             className={styles.input}
-            required
+            // required
           />
           <input
             type="date"
             placeholder="DOB"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
+            onFocus={() => setKeyword("")}
             className={styles.input}
           />
           <div className={styles.buttonContainer}>
@@ -84,14 +96,14 @@ function SearchForm() {
           <input
             type="text"
             placeholder="Member No."
-            value={result}
+            value={memberNo}
             readOnly
             className={styles.input}
           />
           <input
             type="text"
             placeholder="Member Name"
-            // value={}
+            value={memberName}
             readOnly
             className={styles.input}
           />
