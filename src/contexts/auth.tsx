@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { ILoginBody, IUser } from "../types/user";
 import { authApi } from "../apis/auth";
 
@@ -31,8 +31,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   // call this function when you want to authenticate the user
   const login = async (data: ILoginBody) => {
     const response = await authApi.login(data);
-    localStorage.setItem("token", response.JWT);
-    setUser({
+    const user = {
       Href: response.Href,
       UserId: response.UserId,
       FirstName: response.FirstName,
@@ -42,7 +41,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       IsPINLocked: response.IsPINLocked,
       LoginName: response.LoginName,
       JWT: response.JWT,
-    });
+    };
+
+    localStorage.setItem("token", response.JWT);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    setUser(user);
 
     await getMe();
     navigate("/");
@@ -54,6 +58,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setLoading(false);
       setUser(null);
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       return;
     }
   };
