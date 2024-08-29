@@ -5,18 +5,16 @@ import { patronApi } from "../../apis/patron";
 
 function SearchForm() {
   const { user, logout } = useAuth();
-  const [keyword, setKeyword] = useState("");
   const [passport, setPassport] = useState("");
   const [dob, setDob] = useState("");
   const [memberNo, setMemberNo] = useState("");
   const [memberName, setMemberName] = useState("");
-  const [result, setResult] = useState();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await patronApi.getList({ keyword, passport, dob });
-      setResult(response.total);
+      const response = await patronApi.getList({ passport, dob });
+      // setResult(response);
       if (response > 0) {
         setMemberNo(response);
         setMemberName(`${response[0].FirstName} ${response[0].LastName}`);
@@ -27,18 +25,9 @@ function SearchForm() {
   };
 
   const handleReset = () => {
-    setKeyword("");
     setPassport("");
     setDob("");
-    // setResult([]);
   };
-
-
-  console.log("Result", result)
-  console.log("member No", memberNo)
-  console.log("member name", memberName)
-
-  
 
   return (
     <div className={styles.container}>
@@ -59,15 +48,6 @@ function SearchForm() {
           <h2 className={styles.header}>HPR MEMBER SEARCH</h2>
           <input
             type="text"
-            placeholder="Keyword"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onFocus={() => setKeyword("")}
-            className={styles.input}
-            required
-          />
-          <input
-            type="text"
             placeholder="Passport"
             value={passport}
             onChange={(e) => setPassport(e.target.value)}
@@ -79,7 +59,6 @@ function SearchForm() {
             placeholder="DOB"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
-            onFocus={() => setKeyword("")}
             className={styles.input}
           />
           <div className={styles.buttonContainer}>

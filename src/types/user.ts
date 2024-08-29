@@ -9,12 +9,7 @@ export interface IUser {
     LoginName: string
     JWT: string
   }
-  
 
-export interface Token {
-    token: string
-    refreshToken: string
-}
 
 export interface ILoginBody {
     userName: string

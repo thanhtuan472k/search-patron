@@ -32,7 +32,19 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = async (data: ILoginBody) => {
     const response = await authApi.login(data);
     localStorage.setItem("token", response.JWT);
-    //   await getMe()
+    setUser({
+      Href: response.Href,
+      UserId: response.UserId,
+      FirstName: response.FirstName,
+      LastName: response.LastName,
+      Status: response.Status,
+      SiteId: response.SiteId,
+      IsPINLocked: response.IsPINLocked,
+      LoginName: response.LoginName,
+      JWT: response.JWT,
+    });
+
+    await getMe();
     navigate("/");
 
     setLoading(true);
@@ -44,36 +56,19 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       localStorage.removeItem("token");
       return;
     }
-
-    try {
-
-    } catch(error) {
-        const user = setUser(user);
-    }
   };
 
-  // const getMe = async () => {
-  //     setLoading(true);
-  //     const token = localStorage.getItem("token");
+  const getMe = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("token");
 
-  //     if(!token) {
-  //         setLoading(false);
-  //         setUser(null);
-  //         localStorage.removeItem("token");
-  //         return;
-  //     }
-
-  //     try {
-  //         const user =
-  //         setUser(user);
-  //     } catch (error) {
-  //         console.log(error)
-  //         setUser(null);
-  //         localStorage.removeItem("token");
-  //     } finally{
-  //         setLoading(false)
-  //     }
-  // }
+    if (!token) {
+      setLoading(false);
+      setUser(null);
+      localStorage.removeItem("token");
+      return;
+    }
+  };
 
   // call this function to sign out logged in user
   const logout = () => {
@@ -81,10 +76,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem("token");
     navigate("/", { replace: true });
   };
-
-  // useEffect(() => {
-  //     getMe();
-  // }, [])
 
   return (
     <AuthContext.Provider
