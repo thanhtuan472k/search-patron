@@ -3,7 +3,7 @@ import { instance } from "./client"
 
 export const patronApi = {
     getList: async(params: IPatronQuery) => {
-        const response = await instance.get("/v2.3/bearer/Marketing.svc/Users/Authenticate", {params})
+        const response = await instance.get("/bearer/PlayerTracking.svc/Patrons?siteId=1", {params})
         return response.data
     }
 }

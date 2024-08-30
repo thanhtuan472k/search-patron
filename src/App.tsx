@@ -14,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<AuthRoute><LoginForm /></AuthRoute>} />
             <Route path="/" element={<ProtectedRoute><SearchForm /></ProtectedRoute>} />
+            <Route path="/" element={<ProtectedRoute><SearchForm /></ProtectedRoute>} />
           </Routes>
         </AuthProvider>
       </Router>

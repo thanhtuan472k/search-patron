@@ -5,10 +5,11 @@ import { useAuth } from '../contexts/auth';
 
 export const AuthRoute = ({ children }: PropsWithChildren) => {
     const { user, loading } = useAuth();
+    console.log("user", user)
 
-    // if(loading) {
-    //     return <div>Loading...</div>
-    // }
+    if(loading) {
+        return <div>Loading...</div>
+    }
 
     if (user) {
         return <Navigate to="/" />;

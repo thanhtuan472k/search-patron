@@ -9,24 +9,28 @@ function SearchForm() {
   const [dob, setDob] = useState("");
   const [memberNo, setMemberNo] = useState("");
   const [memberName, setMemberName] = useState("");
+  const [error, setError] = useState("");
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await patronApi.getList({ passport, dob });
-      // setResult(response);
-      if (response > 0) {
-        setMemberNo(response);
-        setMemberName(`${response[0].FirstName} ${response[0].LastName}`);
+      console.log("ResponseList:", response.Patrons[0].PatronNumber);
+      if (response.Patrons.length > 0) {
+        setMemberNo(response.Patrons[0].PatronNumber);
+        setMemberName(`${response.Patrons[0].FirstName} ${response.Patrons[0].LastName}`);
       }
-    } catch (error) {
-      console.error("Error fetching filtered users:", error);
+    } catch (error: any) {
+      setError(error?.ErrorMessage || "Something went wrong");
     }
   };
 
   const handleReset = () => {
     setPassport("");
     setDob("");
+    setMemberNo("");
+    setMemberName("");
+    setError("");
   };
 
   return (
@@ -52,7 +56,7 @@ function SearchForm() {
             value={passport}
             onChange={(e) => setPassport(e.target.value)}
             className={styles.input}
-            // required
+            required
           />
           <input
             type="date"
@@ -60,6 +64,7 @@ function SearchForm() {
             value={dob}
             onChange={(e) => setDob(e.target.value)}
             className={styles.input}
+            required
           />
           <div className={styles.buttonContainer}>
             <button type="submit" className={styles.button}>
@@ -71,6 +76,7 @@ function SearchForm() {
           </div>
         </form>
         <div className={styles.resultContainer}>
+          {error && <p className={styles.error}>{error}</p>}
           <h3 className={styles.resultHeader}>RESULT</h3>
           <input
             type="text"

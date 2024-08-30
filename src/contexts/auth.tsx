@@ -13,18 +13,18 @@ interface IAuthContext {
   user: IUser | null;
   login: (data: ILoginBody) => Promise<void>;
   logout: () => void;
-  loading: boolean;
+  // loading: boolean;
 }
 
 const AuthContext = createContext<IAuthContext>({
   user: null,
   login: () => new Promise((resolve) => resolve()),
   logout: () => {},
-  loading: true,
+  // loading: true,
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
 
@@ -43,15 +43,16 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       LoginName: response.LoginName,
       JWT: response.JWT,
     });
+    
 
-    await getMe();
+    // await getMe();
     navigate("/");
 
-    setLoading(true);
+    // setLoading(true);
     const token = localStorage.getItem("token");
 
     if (!token) {
-      setLoading(false);
+      // setLoading(false);
       setUser(null);
       localStorage.removeItem("token");
       return;
@@ -59,11 +60,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const getMe = async () => {
-    setLoading(true);
+    // setLoading(true);
     const token = localStorage.getItem("token");
 
     if (!token) {
-      setLoading(false);
+      // setLoading(false);
       setUser(null);
       localStorage.removeItem("token");
       return;
@@ -74,8 +75,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("token");
-    navigate("/", { replace: true });
+    // navigate("/", { replace: true });
   };
+
+  useEffect(() => {
+    getMe();
+    // setLoading(false);
+  }, [])
 
   return (
     <AuthContext.Provider
@@ -83,7 +89,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         user,
         login,
         logout,
-        loading,
+        // loading,
       }}
     >
       {" "}

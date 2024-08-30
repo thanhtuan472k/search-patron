@@ -4,10 +4,9 @@ import { useAuth } from '../contexts/auth';
 
 export const ProtectedRoute = ({ children }:PropsWithChildren) => {
     const { user, loading } = useAuth();
-
-    // if(loading) {
-    //     return <div>Loading...</div>
-    // }
+    if(loading) {
+        return <div>Loading...</div>
+    }
 
     if (!user) {
         // user is not authenticated
@@ -15,3 +14,4 @@ export const ProtectedRoute = ({ children }:PropsWithChildren) => {
     }
     return children;
 };
+
