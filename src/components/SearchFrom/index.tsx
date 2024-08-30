@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./style.module.css";
 import { useAuth } from "../../contexts/auth";
 import { patronApi } from "../../apis/patron";
@@ -10,6 +10,7 @@ function SearchForm() {
   const [memberNo, setMemberNo] = useState("");
   const [memberName, setMemberName] = useState("");
   const [error, setError] = useState("");
+  const ref = useRef<HTMLInputElement>(null);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +61,7 @@ function SearchForm() {
           />
           <input
             type="date"
+            ref={ref}
             placeholder="DOB"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
