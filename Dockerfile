@@ -1,19 +1,34 @@
-# Use an official node image as the base image
-FROM node:18-alpine as build
+# Start from the latest node base image
+FROM node:18-alpine as builder
 
-# Set the working directory
+# Set the Current Working Directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Install ts
+RUN npm install -g typescript
+
+# Copy package.json and yarn.lock first, for caching deps
+COPY package.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of the application code to the working directory
 COPY . .
 
-# Export the build output
-EXPOSE 5000
+# Build the application
+RUN npm run build
 
-CMD [ "npm", "run", "dev" ]
+# Use nginx to serve the built application
+FROM nginx
+
+WORKDIR /usr/share/nginx/html
+
+# Expose port
+EXPOSE 80
+
+# Copy nginx configuration file
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
